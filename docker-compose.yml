@@ -1,0 +1,43 @@
+version: '3'
+services:
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '3001:3001'
+  #   depends_on:
+  #     - dynamodb
+  #     - elasticsearch
+  dynamodb:
+    image: amazon/dynamodb-local
+    hostname: localhost
+    container_name: dynamodb-local
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /data
+    volumes:
+      - './.dynamodb:/data'
+    ports:
+      - '8000:8000'
+    expose:
+      - '8000'
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+
+volumes:
+  esdata:
+
+networks:
+  elastic:
