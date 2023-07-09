@@ -1,14 +1,14 @@
 version: '3'
 services:
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - '3001:3001'
-  #   depends_on:
-  #     - dynamodb
-  #     - elasticsearch
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - dynamodb
+      - elasticsearch
   dynamodb:
     image: amazon/dynamodb-local
     hostname: localhost
